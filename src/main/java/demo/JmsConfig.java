@@ -1,8 +1,6 @@
 package demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,17 +15,18 @@ import javax.jms.ConnectionFactory;
 public class JmsConfig {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+
+    @Bean
+    SingleTypeMappingJackson2MessageConverter pingDocumentMappingJackson2MessageConverter(){
+        return new SingleTypeMappingJackson2MessageConverter(PingDocument.class, objectMapper);
+    };
 
     @Bean
     JmsListenerContainerFactory<?> myJmsContainerFactory(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-
-        MappingJackson2MessageConverter converter = new SingleTypeMappingJackson2MessageConverter(PingDocument.class);
-        converter.setTargetType(MessageType.TEXT);
-        converter.setObjectMapper(objectMapper);
-        factory.setMessageConverter(converter);
+        factory.setMessageConverter(pingDocumentMappingJackson2MessageConverter());
         return factory;
     }
 

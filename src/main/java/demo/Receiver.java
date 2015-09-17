@@ -1,20 +1,18 @@
 package demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import java.lang.invoke.MethodHandles;
+
 @Component
 public class Receiver {
-
-    @Autowired
-    ConfigurableApplicationContext context;
+    private final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @JmsListener(destination = "mailbox-destination", containerFactory = "myJmsContainerFactory")
     public void receiveMessage(PingDocument message) {
-        System.out.println("Received <" + message + ">");
-        context.close();
-
+        LOG.warn("Received <{}", message);
     }
 }

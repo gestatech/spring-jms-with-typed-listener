@@ -2,9 +2,8 @@ package demo;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -13,10 +12,12 @@ public class SingleTypeMappingJackson2MessageConverter extends MappingJackson2Me
 
     private final JavaType type;
 
-    public SingleTypeMappingJackson2MessageConverter(Class clazz) {
+    public SingleTypeMappingJackson2MessageConverter(Class clazz, ObjectMapper objectMapper) {
         super();
-        this.type = new ObjectMapper().constructType(clazz);
-       }
+        setObjectMapper(objectMapper);
+        setTargetType(MessageType.TEXT);
+        this.type = objectMapper.constructType(clazz);
+    }
 
     @Override
     protected JavaType getJavaTypeForMessage(Message message) throws JMSException {
