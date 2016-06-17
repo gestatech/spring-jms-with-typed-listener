@@ -1,24 +1,20 @@
 package demo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.Builder;
+import lombok.Value;
 
-public class PingDocument {
+import java.io.Serializable;
 
-    private final String message;
+@Value
+@Builder
+public class PingDocument implements Serializable {
+
+   private final String message;
 
     @JsonCreator
     public PingDocument(String message) {
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    @Override
-    public String toString() {
-        return "PingDocument{" +
-                "message='" + message + '\'' +
-                '}';
-    }
 }

@@ -23,4 +23,6 @@ public class SingleTypeMappingJackson2MessageConverter extends MappingJackson2Me
     protected JavaType getJavaTypeForMessage(Message message) throws JMSException {
         return type;
     }
+
+
 }

@@ -1,0 +1,15 @@
+spring:
+    jms:
+        listener:
+            concurrency:        1
+            max-concurrency:    2
+    activemq:
+        in-memory: true
+    jackson:
+        serialization:
+            indent_output:              true
+            write_dates_as_timestamps:  false
+        deserialization:
+            fail-on-unknown-properties: false
+        property-naming-strategy:       CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+
